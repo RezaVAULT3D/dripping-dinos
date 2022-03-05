@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Snackbar, Alert } from '@mui/material';
 import { ethers } from 'ethers';
 import MHidden from '../../components/@mui-extend/MHidden';
@@ -60,60 +60,22 @@ export default function HomePage() {
 		setIsOpened(true);
 	};
 
-	// const connectWallet = async () => {
-	// 	const { ethereum } = window;
+	const connectWallet = async () => {
+		const { ethereum } = window;
 
-	// 	if (!ethereum) {
-	// 		openAlert('warning', 'Please install metamask.');
-	// 	}
+		if (!ethereum) {
+			openAlert('warning', 'Please install metamask.');
+		}
 
-	// 	try {
-	// 		const accounts = await ethereum.request({
-	// 			method: 'eth_requestAccounts',
-	// 		});
-	// 		setCurrentAccount(accounts[0]);
-
-	// 	} catch (error) {
-	// 		openAlert('error', 'Sorry something was wrong.');
-	// 	}
-	// };
-
-	const connectWallet = useCallback(async function () {
-		// This is the initial `provider` that is returned when
-		// using web3Modal to connect. Can be MetaMask or WalletConnect.
-		const provider = await web3Modal.connect();
-
-		// We plug the initial `provider` into ethers.js and get back
-		// a Web3Provider. This will add on methods from ethers.js and
-		// event listeners such as `.on()` will be different.
-		const web3Provider = new providers.Web3Provider(provider);
-
-		const signer = web3Provider.getSigner();
-		const address = await signer.getAddress();
-
-		const network = await web3Provider.getNetwork();
-
-		dispatch({
-			type: 'SET_WEB3_PROVIDER',
-			provider,
-			web3Provider,
-			address,
-			chainId: network.chainId,
-		});
-	}, []);
-
-	const disconnectWallet = useCallback(
-		async function () {
-			await web3Modal.clearCachedProvider();
-			if (provider?.disconnect && typeof provider.disconnect === 'function') {
-				await provider.disconnect();
-			}
-			dispatch({
-				type: 'RESET_WEB3_PROVIDER',
+		try {
+			const accounts = await ethereum.request({
+				method: 'eth_requestAccounts',
 			});
-		},
-		[provider]
-	);
+			setCurrentAccount(accounts[0]);
+		} catch (error) {
+			openAlert('error', 'Sorry something was wrong.');
+		}
+	};
 
 	const checkWalletIsConnected = async () => {
 		const { ethereum } = window;
