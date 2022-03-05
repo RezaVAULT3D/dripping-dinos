@@ -180,7 +180,7 @@ export default function MobileNavbar({ navConfig }) {
               />
             ))}
           </List>
-          <Stack direction="row" justifyContent="center" alignItems="center">
+          <Stack direction="row" justifyContent="center" alignItems="center"  position="relative" zIndex={9}>
             <IconButton sx={{ color: '#F2F2F2', fontSize: 32 }} component={Link} href={INSTAGRAM_URL}>
               <Icon icon="ant-design:instagram-filled" />
             </IconButton>

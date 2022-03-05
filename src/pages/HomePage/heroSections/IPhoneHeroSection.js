@@ -21,7 +21,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 export default function IPhoneHeroSection({ currentAccount, mint, connectWallet }) {
   return (
-    <Box position="relative" pt={10} height="100vh">
+    <Box position="relative" pt={10}>
       <Box ml={3} zIndex={99}>
         <Typography
           color="primary"
@@ -60,7 +60,7 @@ export default function IPhoneHeroSection({ currentAccount, mint, connectWallet 
         </Stack>
       </Box>
 
-      <Box mt={5} zIndex={99} position="absolute" bottom={40}>
+      <Box mt={5} zIndex={99}>
         <Grid container spacing={1} alignItems="flex-end">
           <Grid item xs={8}>
             <Box component="img" src="/assets/images/hero_iPhone.png" width="100%" alt="" sx={{ zIndex: 99 }} position="relative" />
@@ -83,7 +83,7 @@ export default function IPhoneHeroSection({ currentAccount, mint, connectWallet 
         </Grid>
       </Box>
 
-      <Stack className="skewBar" sx={{ height: 40 }} justifyContent="center" position="absolute" bottom={0}>
+      <Stack className="skewBar" sx={{ height: 40 }} justifyContent="center">
         <marquee>
           <Stack direction="row" spacing={5} alignItems="center">
             <Icon icon="emojione-monotone:eight-pointed-star" />

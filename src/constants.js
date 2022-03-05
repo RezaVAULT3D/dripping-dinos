@@ -2,7 +2,7 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/drippingdinosnft/';
 export const DISCORD_URL = 'https://discord.gg/drippingdinos';
 export const TWITTER_URL = 'https://twitter.com/DrippingDinos';
 export const CONTRACT_ADDRESS = '0x63B7B030D636A7C3E9D7c868C5Ec158efdcc83ab';
-export const NFT_PRICE = 0.01;
+export const NFT_PRICE = 0.1;
 export const ABI = [
   {
     "inputs": [],
