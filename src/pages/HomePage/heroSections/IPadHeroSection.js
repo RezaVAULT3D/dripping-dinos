@@ -4,6 +4,7 @@ import { grey } from '@mui/material/colors';
 import { Icon } from '@iconify/react';
 import Incrementer from '../../../components/Incrementor';
 import { DISCORD_URL, INSTAGRAM_URL, TWITTER_URL } from '../../../constants';
+import useWallet from '../../../hooks/useWallet';
 
 /* ------------------------------------------------------------------------------ */
 
@@ -19,7 +20,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 /* ------------------------------------------------------------------------------ */
 
-export default function IPadHeroSection({ currentAccount, mint, connectWallet }) {
+export default function IPadHeroSection({ mint }) {
+  const { currentAccount, connectWallet } = useWallet();
   return (
     <Box position="relative">
       <Box ml={6} pt={18} zIndex={99}>

@@ -3,6 +3,7 @@ import { Box, Button, Stack, Typography, styled } from '@mui/material';
 import { grey, purple } from '@mui/material/colors';
 import { Icon } from '@iconify/react';
 import Incrementer from '../../../components/Incrementor';
+import useWallet from '../../../hooks/useWallet';
 
 /* ------------------------------------------------------------------------------ */
 
@@ -19,7 +20,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 /* ------------------------------------------------------------------------------ */
 
-export default function DesktopHeroSection({ currentAccount, mint, connectWallet }) {
+export default function DesktopHeroSection({ mint }) {
+  const { currentAccount, connectWallet } = useWallet();
+  
   return (
     <Stack
       height="100vh"
