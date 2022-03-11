@@ -54,19 +54,23 @@ export default function HomePage() {
 			if (isConnected === true) {
 				const web3Modal = await getWeb3Modal();
 				const connection = await web3Modal.connect();
-				// const chainId = await ethereum.request({ method: 'eth_chainId' });
-				// if (chainId === '0x1') {
 				const provider = new ethers.providers.Web3Provider(connection);
 				const signer = provider.getSigner();
-				const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-				let transaction = await contract.mint(mintAmount, {
-					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-				});
-				await transaction.wait();
-				openAlert('success', 'Minted!');
-				// } else {
-				// openAlert('warning', 'Please choose Ethereum mainnet.');
-				// }
+
+				const { chainId } = await provider.getNetwork();
+
+				// console.log('chain id: ' + chainId);
+				// const chainId = await ethereum.request({ method: 'eth_chainId' });
+				if (chainId === 1) {
+					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+					let transaction = await contract.mint(mintAmount, {
+						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+					});
+					await transaction.wait();
+					openAlert('success', 'Minted!');
+				} else {
+					openAlert('warning', 'Please choose Ethereum mainnet.');
+				}
 			} else {
 				openAlert('error', "Ethereum object doesn't exist");
 			}
