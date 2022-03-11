@@ -23,8 +23,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
 export default function DesktopHeroSection({ mint }) {
 	const { currentAccount, connectWallet } = useWallet();
 
-	console.log(currentAccount);
-
 	return (
 		<Stack
 			height='100vh'
