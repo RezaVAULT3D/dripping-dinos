@@ -73,9 +73,12 @@ export default function HomePage() {
 	// 	}
 	// };
 
-	const mint = async () => {
+	const mint = async (e) => {
+		e.preventDefault();
+		alert('mint clicked');
 		try {
 			if (isConnected === true) {
+				alert('isConnected');
 				// console.log('chain id: ' + chainId);
 				// const chainId = await ethereum.request({ method: 'eth_chainId' });
 				// if (chainId === 1) {
