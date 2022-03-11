@@ -18,6 +18,7 @@ export default function HomePage() {
 	const [message, setMessage] = useState('');
 	const [contractAddress, setContractAddress] = useState(undefined);
 	const [isConnected, setIsConnected] = useState(false);
+	const [chainId, setChainId] = useState(undefined);
 
 	const openAlert = (severity, message) => {
 		setSeverity(severity);
@@ -50,7 +51,9 @@ export default function HomePage() {
 			const connection = await web3Modal.connect();
 			const provider = new ethers.providers.Web3Provider(connection);
 			const signer = provider.getSigner();
+			const { chainId } = await provider.getNetwork();
 			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+			setChainId(chainId);
 			setContractAddress(contract);
 			setIsConnected(true);
 		};
@@ -75,30 +78,17 @@ export default function HomePage() {
 
 	const mint = async (e) => {
 		e.preventDefault();
-		alert('mint clicked');
 		try {
 			if (isConnected === true) {
-				alert('isConnected');
-				// console.log('chain id: ' + chainId);
-				// const chainId = await ethereum.request({ method: 'eth_chainId' });
-				// if (chainId === 1) {
-				// const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
-				// alert('const: contract passed');
-
-				let transaction = await contractAddress.mint(mintAmount, {
-					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-				});
-
-				alert('const: transaction passed');
-				// alert(contract);
-				// console.log('mobile triggered');
-				await transaction.wait();
-				alert('const: await passed');
-				openAlert('success', 'Minted!');
-				alert('const: we should not get this far');
-				// } else {
-				// 	openAlert('warning', 'Please choose Ethereum mainnet.');
-				// }
+				if (chainId === 1) {
+					let transaction = await contractAddress.mint(mintAmount, {
+						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+					});
+					await transaction.wait();
+					openAlert('success', 'Minted!');
+				} else {
+					openAlert('warning', 'Please choose Ethereum mainnet.');
+				}
 			} else {
 				openAlert('error', "Ethereum object doesn't exist");
 			}
@@ -107,7 +97,6 @@ export default function HomePage() {
 				'error',
 				error.message ? error.message : 'Transaction is failed.'
 			);
-			alert('failed, it might start the loop over from here?');
 		}
 	};
 
