@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Snackbar, Alert } from '@mui/material';
-import { ethers } from 'ethers';
+import { ethers, Contract } from 'ethers';
 import MHidden from '../../components/@mui-extend/MHidden';
 import DesktopHeroSection from './heroSections/DesktopHeroSection';
 import IPadHeroSection from './heroSections/IPadHeroSection';
@@ -16,6 +16,7 @@ export default function HomePage() {
 	const [isOpened, setIsOpened] = useState(false);
 	const [severity, setSeverity] = useState('success');
 	const [message, setMessage] = useState('');
+	const [contractAddress, setContractAddress] = useState(undefined);
 	const [isConnected, setIsConnected] = useState(false);
 
 	const openAlert = (severity, message) => {
@@ -40,11 +41,17 @@ export default function HomePage() {
 		});
 		return web3Modal;
 	};
-	console.log('web3modal deets' + getWeb3Modal);
+	// console.log('web3modal deets' + getWeb3Modal);
+	// console.log('signer deets' + getWeb3Modal.signer);
 
 	useEffect(() => {
 		const init = async () => {
-			await getWeb3Modal();
+			const web3Modal = await getWeb3Modal();
+			const connection = await web3Modal.connect();
+			const provider = new ethers.providers.Web3Provider(connection);
+			const signer = provider.getSigner();
+			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+			setContractAddress(contract);
 			setIsConnected(true);
 		};
 		init();
@@ -52,10 +59,12 @@ export default function HomePage() {
 
 	// const minter = async () => {
 	// 	try {
-	// 		const connection = await web3Modal.connect();
-	// 		const provider = new ethers.providers.Web3Provider(connection);
-	// 		const signer = provider.getSigner();
-	// 		const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+
+	// const connection = connectionWallet;
+	// const provider = new ethers.providers.Web3Provider(connection);
+
+	// const signer = provider.getSigner();
+	// const contract =
 	// 	} catch (error) {
 	// 		openAlert(
 	// 			'error',
@@ -67,35 +76,26 @@ export default function HomePage() {
 	const mint = async () => {
 		try {
 			if (isConnected === true) {
-				const web3Modal = await getWeb3Modal();
-				alert('const: web3Modal passed');
-				const connection = await web3Modal.connect();
-				alert('const: connection passed');
-				const provider = new ethers.providers.Web3Provider(connection);
-				alert('const: provider passed');
-				const signer = provider.getSigner();
-				alert('const: signer passed');
-
-				const { chainId } = await provider.getNetwork();
-				alert('const: chainid passed');
-
 				// console.log('chain id: ' + chainId);
 				// const chainId = await ethereum.request({ method: 'eth_chainId' });
-				if (chainId === 1) {
-					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-					alert('const: contract passed');
-					let transaction = await contract.mint(mintAmount, {
-						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-					});
-					alert('const: transaction passed');
-					console.log('mobile triggered');
-					await transaction.wait();
-					alert('const: await passed');
-					openAlert('success', 'Minted!');
-					alert('const: we should not get this far');
-				} else {
-					openAlert('warning', 'Please choose Ethereum mainnet.');
-				}
+				// if (chainId === 1) {
+				// const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+				// alert('const: contract passed');
+
+				let transaction = await contractAddress.mint(mintAmount, {
+					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+				});
+
+				alert('const: transaction passed');
+				// alert(contract);
+				// console.log('mobile triggered');
+				await transaction.wait();
+				alert('const: await passed');
+				openAlert('success', 'Minted!');
+				alert('const: we should not get this far');
+				// } else {
+				// 	openAlert('warning', 'Please choose Ethereum mainnet.');
+				// }
 			} else {
 				openAlert('error', "Ethereum object doesn't exist");
 			}
