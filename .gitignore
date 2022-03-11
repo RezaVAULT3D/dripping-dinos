@@ -50,6 +50,10 @@ typings/
 # Optional npm cache directory
 .npm
 
+#package lock and build if build was ran before deploy
+package-lock.json
+build/
+
 # Optional eslint cache
 .eslintcache
 
