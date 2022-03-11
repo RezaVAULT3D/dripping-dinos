@@ -26,7 +26,6 @@ export default function HomePage() {
 
 	const getWeb3Modal = async () => {
 		const web3Modal = new Web3Modal({
-			disableInjectedProvider: true,
 			network: 'mainnet',
 			cacheProvider: false,
 			providerOptions: {
