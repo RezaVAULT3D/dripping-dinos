@@ -91,7 +91,7 @@ export default function HomePage() {
 						walletSigner.sendTransaction(tx).then((transaction) => {
 							console.dir(transaction);
 
-							alert('Send finished!');
+							alert('Finished');
 						});
 					} catch (error) {
 						alert('failed to send!!');
