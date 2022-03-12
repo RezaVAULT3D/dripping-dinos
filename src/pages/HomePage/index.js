@@ -18,6 +18,7 @@ export default function HomePage() {
 	const [message, setMessage] = useState('');
 	const [contractAddress, setContractAddress] = useState(undefined);
 	const [isConnected, setIsConnected] = useState(false);
+	const [walletSigner, setWalletSigner] = useState(undefined);
 	const [chainId, setChainId] = useState(undefined);
 
 	const openAlert = (severity, message) => {
@@ -53,6 +54,7 @@ export default function HomePage() {
 			const signer = provider.getSigner();
 			const { chainId } = await provider.getNetwork();
 			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+			setWalletSigner(connection);
 			setChainId(chainId);
 			setContractAddress(contract);
 			setIsConnected(true);
@@ -81,10 +83,33 @@ export default function HomePage() {
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
-					let transaction = await contractAddress.mint(mintAmount, {
+					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
-					await transaction.wait();
+
+					try {
+						walletSigner.sendTransaction(tx).then((transaction) => {
+							console.dir(transaction);
+
+							alert('Send finished!');
+						});
+					} catch (error) {
+						alert('failed to send!!');
+					}
+					// // @ts-ignore
+					// function sendTransaction(_tx: any) {
+					// 	return new Promise((resolve, reject) => {
+					// 		web3.eth
+					// 			.sendTransaction(_tx)
+					// 			.once('transactionHash', (txHash: string) => resolve(txHash))
+					// 			.catch((err: any) => reject(err));
+					// 	});
+					// }
+
+					// send transaction
+					// const result = await sendTransaction(tx);
+
+					// await transaction.wait();
 					openAlert('success', 'Minted!');
 				} else {
 					openAlert('warning', 'Please choose Ethereum mainnet.');
