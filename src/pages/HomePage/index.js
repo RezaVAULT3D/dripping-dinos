@@ -78,8 +78,7 @@ export default function HomePage() {
 	// 	}
 	// };
 
-	const mint = async (e) => {
-		e.preventDefault();
+	const mint = async () => {
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
