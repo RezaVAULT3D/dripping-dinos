@@ -87,15 +87,12 @@ export default function HomePage() {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
 
-					try {
-						walletSigner.sendTransaction(tx).then((transaction) => {
-							console.dir(transaction);
+					walletSigner.sendTransaction(tx).then((transaction) => {
+						console.dir(transaction);
 
-							alert('Finished');
-						});
-					} catch (error) {
-						alert('failed to send!!');
-					}
+						alert('Finished');
+					});
+
 					// // @ts-ignore
 					// function sendTransaction(_tx: any) {
 					// 	return new Promise((resolve, reject) => {

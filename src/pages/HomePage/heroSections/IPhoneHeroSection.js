@@ -65,7 +65,18 @@ export default function IPhoneHeroSection({ mint }) {
 				<Stack direction='row' alignItems='center' spacing={5}>
 					<Incrementer available={3} />
 					{currentAccount ? (
-						<ColorButton onClick={mint}>Mint</ColorButton>
+						<>
+							<ColorButton onClick={() => mint}>iPhone Mint</ColorButton>
+							<span
+								className='bg-black text-white p-4 mt-2'
+								onClick={() => mint}
+							>
+								alternate mint
+							</span>
+							<span className='bg-green text-white p-4 mt-2' onClick={mint}>
+								alternate mint nonfunction
+							</span>
+						</>
 					) : (
 						<ColorButton onClick={connectWallet}>Connect wallet</ColorButton>
 					)}
