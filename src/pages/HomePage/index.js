@@ -82,6 +82,7 @@ export default function HomePage() {
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
+					alert('revision not cached');
 					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
