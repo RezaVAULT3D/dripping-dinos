@@ -79,10 +79,10 @@ export default function HomePage() {
 	// };
 
 	const mint = async () => {
+		openAlert('success', 'shown on iphone?');
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
-					openAlert('revision not cached2');
 					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
@@ -130,9 +130,6 @@ export default function HomePage() {
 					<IPadHeroSection mint={mint} />
 				</MHidden>
 				<MHidden width='smUp'>
-					<span className='bg-black text-white p-4 mt-2' onClick={mint}>
-						alternate mint
-					</span>
 					<IPhoneHeroSection mint={mint} />
 				</MHidden>
 			</MHidden>
