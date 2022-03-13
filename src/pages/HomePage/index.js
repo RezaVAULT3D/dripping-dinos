@@ -172,8 +172,13 @@ export default function HomePage() {
 					)
 				)
 				.then(console.log('passed the sendTrans'))
-				.catch(() => console.log('Error from outer promise'))
-				.then(console.log('anything?'));
+				.catch(console.log('Error from outer promise'))
+				.then(
+					openAlert(
+						'error',
+						'There was an issue. Check your wallet to make sure it has enough ETH.'
+					)
+				);
 
 			// await walletSigner.signTransaction(tx);
 
