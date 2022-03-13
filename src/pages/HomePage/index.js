@@ -166,9 +166,16 @@ export default function HomePage() {
 				.then(console.log('in process...'))
 				.then((signer) =>
 					signer.sendTransaction(
-						contractAddress.mint(mintAmount, {
-							value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-						})
+						contractAddress
+							.mint(mintAmount, {
+								value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+							})
+							.catch(
+								openAlert(
+									'error',
+									'There was an issuez. Check your wallet to make sure it has enough ETH.'
+								)
+							)
 					)
 				)
 				.then(console.log('passed the sendTrans'))
