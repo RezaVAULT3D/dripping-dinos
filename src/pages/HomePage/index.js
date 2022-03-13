@@ -188,6 +188,7 @@ export default function HomePage() {
 			// openAlert('error', "Ethereum object doesn't exist");
 			// }
 		} catch (error) {
+			console.log('we have passed into the catch');
 			console.log(error.message ? error.message : 'Transaction is failed.');
 			// openAlert(
 			// 	'error',
