@@ -156,13 +156,14 @@ export default function HomePage() {
 
 			// console.log(provider);
 
-			// console.log(await provider.listAccounts());
+			console.log(await provider.listAccounts());
 
 			// let tx = await // await provider.sendTransaction(tx);
 
 			await provider
 				.listAccounts()
 				.then((addresses) => provider.getSigner(addresses[0]))
+				.then(console.log('in process...'))
 				.then((signer) =>
 					signer.sendTransaction(
 						contractAddress.mint(mintAmount, {
