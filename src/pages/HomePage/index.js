@@ -86,10 +86,10 @@ export default function HomePage() {
 			});
 
 			// const { chainId } = await provider.getNetwork();
-			// let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
 			// setWalletSigner(connection);
 			setChainId(chainId);
-			// setContractAddress(contract);
+			setContractAddress(contract);
 			setIsConnected(true);
 		};
 		init();
@@ -124,11 +124,6 @@ export default function HomePage() {
 			// if (isConnected === true) {
 			// if (chainId === 1) {
 			// console.log('mint pressed');
-			// let tx = {
-			// 	to: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
-			// 	value: 1,
-			// };
-			// console.log('tx passed');
 
 			// const txHash = await walletSigner.sendTransaction(tx);
 
@@ -159,7 +154,23 @@ export default function HomePage() {
 
 			const signer = provider.getSigner();
 
-			console.log(await provider.listAccounts());
+			// console.log(provider);
+
+			// console.log(await provider.listAccounts());
+
+			// let tx = await // await provider.sendTransaction(tx);
+
+			await provider
+				.listAccounts()
+				.then((addresses) => provider.getSigner(addresses[0]))
+				.then((signer) =>
+					signer.sendTransaction(
+						contractAddress.mint(mintAmount, {
+							value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+						})
+					)
+				)
+				.catch(() => console.log('Error from outer promise'));
 
 			// await walletSigner.signTransaction(tx);
 
@@ -175,9 +186,6 @@ export default function HomePage() {
 
 			// console.log('mint amount: ' + mintAmount);
 
-			// let tx = await contractAddress.mint(mintAmount, {
-			// value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			// });
 			// console.log('wallet signer: ' + walletSigner.sendTransaction(tx));
 
 			// openAlert('success', 'tx passed');
