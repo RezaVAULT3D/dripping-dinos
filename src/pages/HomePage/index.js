@@ -82,7 +82,7 @@ export default function HomePage() {
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
-					alert('revision not cached');
+					alert('revision not cached2');
 					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
@@ -115,10 +115,7 @@ export default function HomePage() {
 				openAlert('error', "Ethereum object doesn't exist");
 			}
 		} catch (error) {
-			openAlert(
-				'error',
-				error.message ? error.message : 'Transaction is failed.'
-			);
+			alert('error', error.message ? error.message : 'Transaction is failed.');
 		}
 	};
 
@@ -133,6 +130,9 @@ export default function HomePage() {
 					<IPadHeroSection mint={mint} />
 				</MHidden>
 				<MHidden width='smUp'>
+					<span className='bg-black text-white p-4 mt-2' onClick={mint}>
+						alternate mint
+					</span>
 					<IPhoneHeroSection mint={mint} />
 				</MHidden>
 			</MHidden>
