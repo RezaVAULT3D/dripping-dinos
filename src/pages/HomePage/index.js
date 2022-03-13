@@ -171,7 +171,9 @@ export default function HomePage() {
 						})
 					)
 				)
-				.catch(() => console.log('Error from outer promise'));
+				.then(console.log('passed the sendTrans'))
+				.catch(() => console.log('Error from outer promise'))
+				.then(console.log('anything?'));
 
 			// await walletSigner.signTransaction(tx);
 
