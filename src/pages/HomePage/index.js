@@ -79,19 +79,23 @@ export default function HomePage() {
 	// };
 
 	const mint = async () => {
-		openAlert('success', 'shown on iphone?');
 		try {
 			if (isConnected === true) {
+				openAlert('success', 'Connected To Web3');
 				if (chainId === 1) {
+					openAlert('success', 'Connected To ETH');
 					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
+					openAlert('success', 'tx passed');
 
 					walletSigner.sendTransaction(tx).then((transaction) => {
 						console.dir(transaction);
 
 						alert('Finished');
 					});
+
+					openAlert('success', 'sendTransaction executed');
 
 					// // @ts-ignore
 					// function sendTransaction(_tx: any) {
@@ -115,7 +119,11 @@ export default function HomePage() {
 				openAlert('error', "Ethereum object doesn't exist");
 			}
 		} catch (error) {
-			alert('error', error.message ? error.message : 'Transaction is failed.');
+			alert(error.message ? error.message : 'Transaction is failed.');
+			// openAlert(
+			// 	'error',
+			// 	error.message ? error.message : 'Transaction is failed.'
+			// );
 		}
 	};
 
