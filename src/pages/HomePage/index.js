@@ -5,13 +5,15 @@ import MHidden from '../../components/@mui-extend/MHidden';
 import DesktopHeroSection from './heroSections/DesktopHeroSection';
 import IPadHeroSection from './heroSections/IPadHeroSection';
 import IPhoneHeroSection from './heroSections/IPhoneHeroSection';
-import useWallet from '../../hooks/useWallet';
+// import useWallet from '../../hooks/useWallet';
 import { ABI, CONTRACT_ADDRESS, NFT_PRICE } from '../../constants';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
 export default function HomePage() {
-	const { mintAmount } = useWallet();
+	// const { mintAmount } = useWallet();
+
+	const mintAmount = 1;
 
 	const [isOpened, setIsOpened] = useState(false);
 	const [severity, setSeverity] = useState('success');
@@ -27,31 +29,58 @@ export default function HomePage() {
 		setIsOpened(true);
 	};
 
-	const getWeb3Modal = async () => {
-		const web3Modal = new Web3Modal({
-			network: 'mainnet',
-			cacheProvider: false,
-			providerOptions: {
-				walletconnect: {
-					package: WalletConnectProvider,
-					options: {
-						// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
-						infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-					},
-				},
-			},
-		});
-		return web3Modal;
-	};
+	// const getWeb3Modal = async () => {
+	// 	const web3Modal = new Web3Modal({
+	// 		network: 'mainnet',
+	// 		cacheProvider: false,
+	// 		providerOptions: {
+	// 			walletconnect: {
+	// 				package: WalletConnectProvider,
+	// 				options: {
+	// 					// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
+	// 					infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+	// 				},
+	// 			},
+	// 		},
+	// 	});
+	// 	return web3Modal;
+	// };
 	// console.log('web3modal deets' + getWeb3Modal);
 	// console.log('signer deets' + getWeb3Modal.signer);
+	const providerOptions = {
+		walletconnect: {
+			package: WalletConnectProvider,
+			options: {
+				// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
+				infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+			},
+		},
+	};
 
 	useEffect(() => {
 		const init = async () => {
-			const web3Modal = await getWeb3Modal();
-			const connection = await web3Modal.connect();
-			const provider = new ethers.providers.Web3Provider(connection);
+			const web3Modal = new Web3Modal({
+				disableInjectedProvider: true,
+				network: 'mainnet', // optional
+				cacheProvider: false, // optional
+				providerOptions: {
+					walletconnect: {
+						package: WalletConnectProvider,
+						options: {
+							// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
+							infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+						},
+					},
+				}, // required
+			});
+
+			const instance = await web3Modal.connect();
+
+			const provider = new ethers.providers.Web3Provider(instance);
+
 			const signer = provider.getSigner();
+			const connection = await web3Modal.connect();
+
 			const { chainId } = await provider.getNetwork();
 			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
 			setWalletSigner(connection);
@@ -78,24 +107,46 @@ export default function HomePage() {
 	// 	}
 	// };
 
+	const clearCache = async () => {
+		const web3Modal = new Web3Modal({
+			disableInjectedProvider: true,
+			network: 'mainnet', // optional
+			cacheProvider: false, // optional
+			providerOptions, // required
+		});
+
+		const instance = await web3Modal.connect();
+
+		const provider = new ethers.providers.Web3Provider(instance);
+
+		const signer = provider.getSigner();
+		const connection = await web3Modal.connect();
+		web3Modal.clearCachedProvider();
+		console.log('cleared!');
+	};
+
 	const mint = async () => {
 		try {
 			if (isConnected === true) {
-				openAlert('success', 'Connected To Web3');
 				if (chainId === 1) {
-					openAlert('success', 'Connected To ETH');
+					// openAlert('success', walletSigner);
+
+					// console.log('mint amount: ' + mintAmount);
+
 					let tx = await contractAddress.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
-					openAlert('success', 'tx passed');
+					// console.log('wallet signer: ' + walletSigner.sendTransaction(tx));
+
+					// openAlert('success', 'tx passed');
 
 					walletSigner.sendTransaction(tx).then((transaction) => {
 						console.dir(transaction);
 
-						alert('Finished');
+						// alert('Finished');
 					});
 
-					openAlert('success', 'sendTransaction executed');
+					// openAlert('success', 'sendTransaction executed');
 
 					// // @ts-ignore
 					// function sendTransaction(_tx: any) {
@@ -141,6 +192,8 @@ export default function HomePage() {
 					<IPhoneHeroSection mint={mint} />
 				</MHidden>
 			</MHidden>
+
+			<span onClick={clearCache}>Clear cached provider</span>
 
 			<Snackbar
 				open={isOpened}
