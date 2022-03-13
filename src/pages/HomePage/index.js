@@ -129,22 +129,39 @@ export default function HomePage() {
 		try {
 			if (isConnected === true) {
 				if (chainId === 1) {
-					// openAlert('success', walletSigner);
+					openAlert('success', 'Mint button pressed');
+
+					let tx = {
+						to: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+						value: 1,
+					};
+
+					// await walletSigner.signTransaction(tx);
+
+					// let wallet = walletSigner;
+
+					// await wallet.getBalance();
+					// await wallet.getTransactionCount();
+					// await walletSigner.sendTransaction();
+
+					await contractAddress.mint(mintAmount, {
+						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+					});
 
 					// console.log('mint amount: ' + mintAmount);
 
-					let tx = await contractAddress.mint(mintAmount, {
-						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-					});
+					// let tx = await contractAddress.mint(mintAmount, {
+					// value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+					// });
 					// console.log('wallet signer: ' + walletSigner.sendTransaction(tx));
 
 					// openAlert('success', 'tx passed');
 
-					walletSigner.sendTransaction(tx).then((transaction) => {
-						console.dir(transaction);
+					// walletSigner.sendTransaction(tx).then((transaction) => {
+					// 	console.dir(transaction);
 
-						// alert('Finished');
-					});
+					// 	// alert('Finished');
+					// });
 
 					// openAlert('success', 'sendTransaction executed');
 
@@ -160,6 +177,7 @@ export default function HomePage() {
 
 					// send transaction
 					// const result = await sendTransaction(tx);
+					// const txHash = await web3.eth.sendTransaction(tx);
 
 					// await transaction.wait();
 					openAlert('success', 'Minted!');
