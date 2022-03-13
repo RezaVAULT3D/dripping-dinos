@@ -123,18 +123,43 @@ export default function HomePage() {
 		try {
 			// if (isConnected === true) {
 			// if (chainId === 1) {
-			console.log('mint pressed');
-			let tx = {
-				to: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
-				value: 1,
-			};
-			console.log('tx passed');
+			// console.log('mint pressed');
+			// let tx = {
+			// 	to: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+			// 	value: 1,
+			// };
+			// console.log('tx passed');
 
-			const txHash = await walletSigner.sendTransaction(tx);
+			// const txHash = await walletSigner.sendTransaction(tx);
 
-			console.log('sendTrans happened?');
+			// console.log('sendTrans happened?');
 
-			console.log(txHash);
+			// console.log(txHash);
+
+			// import Web3Modal from 'web3modal';
+			// import { ethers } from 'ethers';
+
+			const web3Modal = new Web3Modal({
+				network: 'mainnet',
+				cacheProvider: false,
+				providerOptions: {
+					walletconnect: {
+						package: WalletConnectProvider,
+						options: {
+							// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
+							infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+						},
+					},
+				},
+			});
+
+			const connection = await web3Modal.connect();
+
+			const provider = new ethers.providers.Web3Provider(connection);
+
+			const signer = provider.getSigner();
+
+			console.log(await provider.listAccounts());
 
 			// await walletSigner.signTransaction(tx);
 
