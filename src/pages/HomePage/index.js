@@ -123,12 +123,16 @@ export default function HomePage() {
 		try {
 			// if (isConnected === true) {
 			// if (chainId === 1) {
+			console.log('mint pressed');
 			let tx = {
 				to: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
 				value: 1,
 			};
+			console.log('tx passed');
 
 			const txHash = await walletSigner.sendTransaction(tx);
+
+			console.log('sendTrans happened?');
 
 			console.log(txHash);
 
@@ -184,7 +188,7 @@ export default function HomePage() {
 			// openAlert('error', "Ethereum object doesn't exist");
 			// }
 		} catch (error) {
-			alert(error.message ? error.message : 'Transaction is failed.');
+			console.log(error.message ? error.message : 'Transaction is failed.');
 			// openAlert(
 			// 	'error',
 			// 	error.message ? error.message : 'Transaction is failed.'
