@@ -163,7 +163,6 @@ export default function HomePage() {
 			await provider
 				.listAccounts()
 				.then((addresses) => provider.getSigner(addresses[0]))
-				.then(console.log('in process...'))
 				.then((signer) =>
 					signer.sendTransaction(
 						contractAddress
@@ -173,19 +172,12 @@ export default function HomePage() {
 							.catch(
 								openAlert(
 									'error',
-									'There was an issuez. Check your wallet to make sure it has enough ETH.'
+									'There was an issue. Check your wallet to make sure it has enough ETH.'
 								)
 							)
 					)
 				)
-				.then(console.log('passed the sendTrans'))
-				.catch(console.log('Error from outer promise'))
-				.then(
-					openAlert(
-						'error',
-						'There was an issue. Check your wallet to make sure it has enough ETH.'
-					)
-				);
+				.catch(console.log('Error from outer promise'));
 
 			// await walletSigner.signTransaction(tx);
 
