@@ -89,14 +89,10 @@ export default function HomePage() {
 
 	async function ProcessMint() {
 		return new Promise((resolve, reject) => {
-			contractAddress
-				.mint(mintAmount, {
-					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-				})
-				.on('debug', console.log)
-				.on('error', (error) => {
-					reject(error);
-				});
+			contractAddress.mint(mintAmount, {
+				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			});
+			console.log(resolve + reject);
 		});
 	}
 
