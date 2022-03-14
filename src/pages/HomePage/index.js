@@ -282,7 +282,15 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
-		console.log(contractAddress);
+		console
+			.log(
+				await contractAddress
+					.mint(mintAmount, {
+						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+					})
+					.catch((err) => console.log(err))
+			)
+			.catch((err) => console.log(err));
 
 		try {
 			// const signature = await library.request({
@@ -306,9 +314,11 @@ export default function HomePage() {
 
 			console.log('params and tx passed');
 
-			const runWalletTransaction = await contractAddress
-				.mint(mintAmount, params)
-				.catch((err) => console.log(err));
+			console.log(
+				await contractAddress
+					.mint(mintAmount, params)
+					.catch((err) => console.log(err))
+			);
 
 			console.log('RAN!');
 
@@ -337,7 +347,7 @@ export default function HomePage() {
 			// 		console.log(' Promise failed:', err);
 			// 	});
 
-			console.log(runWalletTransaction);
+			// console.log(runWalletTransaction);
 
 			setSignedMessage(message);
 			setSignature(signature);
