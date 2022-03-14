@@ -87,285 +87,97 @@ export default function HomePage() {
 		init();
 	}, []);
 
-	const provider = new WalletConnectProvider({
-		infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-	});
-	// Subscribe to accounts change
-	provider.on('accountsChanged', (accounts) => {
-		console.log(accounts);
-	});
-
-	// Subscribe to chainId change
-	provider.on('chainChanged', (chainId) => {
-		console.log(chainId);
-	});
-
-	// Subscribe to session disconnection
-	provider.on('disconnect', (code, reason) => {
-		console.log(code, reason);
-	});
-
-	// Subscribe to session disconnection
-	provider.on('debug', console.log);
-
-	// const minter = async () => {
-	// 	try {
-
-	// const connection = connectionWallet;
-	// const provider = new ethers.providers.Web3Provider(connection);
-
-	// const signer = provider.getSigner();
-	// const contract =
-	// 	} catch (error) {
-	// 		openAlert(
-	// 			'error',
-	// 			error.message ? error.message : 'Transaction is failed.'
-	// 		);
-	// 	}
-	// };
-
-	const clearCache = async () => {
+	const mint = async () => {
+		if (!library) return;
 		const provider = new WalletConnectProvider({
 			infuraId: '716d0574cc4c423a9adc0f4e451076ee',
 		});
+		// Subscribe to accounts change
+		provider.on('accountsChanged', (accounts) => {
+			console.log(accounts);
+		});
 
-		await provider.enable();
-	};
+		// Subscribe to chainId change
+		provider.on('chainChanged', (chainId) => {
+			console.log(chainId);
+		});
 
-	const mints = async () => {
+		// Subscribe to session disconnection
+		provider.on('disconnect', (code, reason) => {
+			console.log(code, reason);
+		});
+
+		// Subscribe to session disconnection
+		provider.on('debug', console.log);
+
 		try {
-			// if (isConnected === true) {
-			// if (chainId === 1) {
-			// console.log('mint pressed');
-
-			// const txHash = await walletSigner.sendTransaction(tx);
-
-			// console.log('sendTrans happened?');
-
-			// console.log(txHash);
-
-			// import Web3Modal from 'web3modal';
-			// import { ethers } from 'ethers';
-
-			const web3Modal = new Web3Modal({
-				network: 'mainnet',
-				cacheProvider: false,
-				providerOptions: {
-					walletconnect: {
-						package: WalletConnectProvider,
-						options: {
-							// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
-							infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-						},
-					},
-				},
-			});
-
-			const connection = await web3Modal.connect();
-
-			const provider = new ethers.providers.Web3Provider(connection);
-
-			const signer = provider.getSigner();
-
-			// console.log(provider);
-
-			// console.log(await provider.listAccounts());
-
-			// let tx = await // await provider.sendTransaction(tx);
-
-			function resolve(result) {
-				console.log('Resolved');
-			}
-
-			function reject(result) {
-				console.error(result);
-			}
-
-			var rawTx = {
-				nonce: ethers.utils.parseUnits('1').toHexString(),
-				gasPrice: ethers.utils.parseUnits('20000000000').toHexString(),
-				gasLimit: ethers.utils.parseUnits('30000000000').toHexString(),
-				to: '0x8CDa0244D76cD48f2d3d3A7BC060FF5ed53A4C87',
-				value: ethers.utils.parseUnits('0.01', 'ether').toHexString(),
-				data: '0xc0de',
-			};
-
-			// console.log(ethers.utils.parseUnits('1', 'ether').toHexString());
-			const txHash = await provider.sendTransaction(rawTx);
-			// console.log('transactionHash is ' + txHash);
-
-			// await provider.sendTransaction(tx).catch((err) => reject(err));
-
-			// await provider
-			// 	.listAccounts()
-			// 	.then((addresses) => provider.getSigner(addresses[0]))
-			// 	.then((signer) =>
-			// 		signer
-			// 			.sendTransaction(tx)
-			// 			// .once('transactionHash', (txHash) => resolve(txHash))
-			// 			.catch((err) => reject(err))
-			// 	)
-			// 	.catch(console.log('Error from outer promise'));
-
-			// await provider
-			// 	.listAccounts()
-			// 	.then((addresses) => provider.getSigner(addresses[0]))
-			// 	.then((signer) =>
-			// 		signer.sendTransaction(
-			// 			contractAddress
-			// 				.mint(mintAmount, {
-			// 					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			// 				})
-			// 				.once('transactionHash', (txHash) => resolve(txHash))
-			// 				.catch((err) => reject(err))
-			// 				.catch(
-			// 					openAlert(
-			// 						'error',
-			// 						'There was an issue. Check your wallet to make sure it has enough ETH.'
-			// 					)
-			// 				)
-			// 		)
-			// 	)
-			// 	.catch(console.log('Error from outer promise'));
-
-			// await walletSigner.signTransaction(tx);
-
-			// let wallet = walletSigner;
-
-			// await wallet.getBalance();
-			// await wallet.getTransactionCount();
-			// await walletSigner.sendTransaction();
-
-			// await contractAddress.mint(mintAmount, {
-			// 	value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			// });
-
-			// console.log('mint amount: ' + mintAmount);
-
-			// console.log('wallet signer: ' + walletSigner.sendTransaction(tx));
-
-			// openAlert('success', 'tx passed');
-
-			// walletSigner.sendTransaction(tx).then((transaction) => {
-			// 	console.dir(transaction);
-
-			// 	// alert('Finished');
-			// });
-
-			// openAlert('success', 'sendTransaction executed');
-
-			// // @ts-ignore
-			// function sendTransaction(_tx: any) {
-			// 	return new Promise((resolve, reject) => {
-			// 		web3.eth
-			// 			.sendTransaction(_tx)
-			// 			.once('transactionHash', (txHash: string) => resolve(txHash))
-			// 			.catch((err: any) => reject(err));
-			// 	});
-			// }
-
-			// send transaction
-			// const result = await sendTransaction(tx);
-			// const txHash = await web3.eth.sendTransaction(tx);
-
-			// await transaction.wait();
-			openAlert('success', 'Minted!');
-			// } else {
-			// openAlert('warning', 'Please choose Ethereum mainnet.');
-			// }
-			// } else {
-			// openAlert('error', "Ethereum object doesn't exist");
-			// }
+			const tx = await contractAddress.populateTransaction
+				.mint(mintAmount, {
+					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+				})
+				.catch((err) => console.log(err));
 		} catch (error) {
 			console.log('we have passed into the catch');
-			console.log(error.message ? error.message : 'Transaction is failed.');
-			// openAlert(
-			// 	'error',
-			// 	error.message ? error.message : 'Transaction is failed.'
-			// );
+			openAlert(
+				'error',
+				error.message ? error.message : 'Transaction is failed.'
+			);
 		}
 	};
 
-	async function processMint() {
-		const tx = await contractAddress.populateTransaction
-			.mint(mintAmount, {
-				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			})
-			.catch((err) => console.log(err));
-	}
-
-	const mint = async () => {
-		if (!library) return;
-		console.log('running ' + account);
-		await processMint();
-		console.log('after ' + processMint() + ' running ' + walletSigner);
+	const mintz = async () => {
+		// await processMint();
+		// console.log('after ' + processMint() + ' running ' + walletSigner);
 		// library.on('debug', console.log);
 		// new providers.Web3Provider(this.wcProvider, 'optimism');
-
-		try {
-			// const signature = await library.request({
-			// 	method: 'personal_sign',
-			// 	params: [toHex(message), account],
-			// });
-			// const transaction = await contractAddress.mint();
-			// console.log(transaction);
-
-			let params = {
-				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			};
-
-			// console.log(params);
-
-			//the transaction
-
-			// const txHash = tx.wait();
-
-			// console.log(tx);
-
-			console.log('params and tx passed');
-
-			console.log(
-				await contractAddress
-					.mint(mintAmount, params)
-					.catch((err) => console.log(err))
-			);
-
-			console.log('RAN!');
-
-			// const signPromise = walletSigner.signTransaction(tx, account);
-			// signPromise
-			// 	.then((signedTx) => {
-			// 		library.sendSignedTransaction(
-			// 			signedTx.rawTransaction,
-			// 			function (err, hash) {
-			// 				if (!err) {
-			// 					console.log(
-			// 						'The hash of your transaction is: ',
-			// 						hash,
-			// 						'\nCheck the mempool to view the status of your transaction!'
-			// 					);
-			// 				} else {
-			// 					console.log(
-			// 						'Something went wrong when submitting your transaction:',
-			// 						err
-			// 					);
-			// 				}
-			// 			}
-			// 		);
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log(' Promise failed:', err);
-			// 	});
-
-			// console.log(runWalletTransaction);
-
-			setSignedMessage(message);
-			setSignature(signature);
-		} catch (error) {
-			setError(error);
-			console.log(error);
-			// openAlert('error', error);
-		}
+		// try {
+		// const signature = await library.request({
+		// 	method: 'personal_sign',
+		// 	params: [toHex(message), account],
+		// });
+		// const transaction = await contractAddress.mint();
+		// console.log(transaction);
+		// let params = {
+		// 	value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+		// };
+		// console.log(
+		// 	await contractAddress
+		// 		.mint(mintAmount, params)
+		// 		.catch((err) => console.log(err))
+		// );
+		// console.log('RAN!');
+		// const signPromise = walletSigner.signTransaction(tx, account);
+		// signPromise
+		// 	.then((signedTx) => {
+		// 		library.sendSignedTransaction(
+		// 			signedTx.rawTransaction,
+		// 			function (err, hash) {
+		// 				if (!err) {
+		// 					console.log(
+		// 						'The hash of your transaction is: ',
+		// 						hash,
+		// 						'\nCheck the mempool to view the status of your transaction!'
+		// 					);
+		// 				} else {
+		// 					console.log(
+		// 						'Something went wrong when submitting your transaction:',
+		// 						err
+		// 					);
+		// 				}
+		// 			}
+		// 		);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(' Promise failed:', err);
+		// 	});
+		// console.log(runWalletTransaction);
+		// 	setSignedMessage(message);
+		// 	setSignature(signature);
+		// } catch (error) {
+		// 	setError(error);
+		// 	console.log(error);
+		// 	// openAlert('error', error);
+		// }
 	};
 
 	return (
@@ -401,3 +213,82 @@ export default function HomePage() {
 		</Box>
 	);
 }
+
+// if (isConnected === true) {
+// if (chainId === 1) {
+// console.log('mint pressed');
+// const txHash = await walletSigner.sendTransaction(tx);
+// console.log('sendTrans happened?');
+// console.log(txHash);
+// import Web3Modal from 'web3modal';
+// import { ethers } from 'ethers';
+// console.log(provider);
+// console.log(await provider.listAccounts());
+// let tx = await // await provider.sendTransaction(tx);
+// console.log('transactionHash is ' + txHash);
+// await provider.sendTransaction(tx).catch((err) => reject(err));
+// await provider
+// 	.listAccounts()
+// 	.then((addresses) => provider.getSigner(addresses[0]))
+// 	.then((signer) =>
+// 		signer
+// 			.sendTransaction(tx)
+// 			// .once('transactionHash', (txHash) => resolve(txHash))
+// 			.catch((err) => reject(err))
+// 	)
+// 	.catch(console.log('Error from outer promise'));
+// await provider
+// 	.listAccounts()
+// 	.then((addresses) => provider.getSigner(addresses[0]))
+// 	.then((signer) =>
+// 		signer.sendTransaction(
+// 			contractAddress
+// 				.mint(mintAmount, {
+// 					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+// 				})
+// 				.once('transactionHash', (txHash) => resolve(txHash))
+// 				.catch((err) => reject(err))
+// 				.catch(
+// 					openAlert(
+// 						'error',
+// 						'There was an issue. Check your wallet to make sure it has enough ETH.'
+// 					)
+// 				)
+// 		)
+// 	)
+// 	.catch(console.log('Error from outer promise'));
+// await walletSigner.signTransaction(tx);
+// let wallet = walletSigner;
+// await wallet.getBalance();
+// await wallet.getTransactionCount();
+// await walletSigner.sendTransaction();
+// await contractAddress.mint(mintAmount, {
+// 	value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+// });
+// console.log('mint amount: ' + mintAmount);
+// console.log('wallet signer: ' + walletSigner.sendTransaction(tx));
+// openAlert('success', 'tx passed');
+// walletSigner.sendTransaction(tx).then((transaction) => {
+// 	console.dir(transaction);
+// 	// alert('Finished');
+// });
+// openAlert('success', 'sendTransaction executed');
+// // @ts-ignore
+// function sendTransaction(_tx: any) {
+// 	return new Promise((resolve, reject) => {
+// 		web3.eth
+// 			.sendTransaction(_tx)
+// 			.once('transactionHash', (txHash: string) => resolve(txHash))
+// 			.catch((err: any) => reject(err));
+// 	});
+// }
+// send transaction
+// const result = await sendTransaction(tx);
+// const txHash = await web3.eth.sendTransaction(tx);
+// await transaction.wait();
+// } else {
+// openAlert('warning', 'Please choose Ethereum mainnet.');
+// }
+// } else {
+// openAlert('error', "Ethereum object doesn't exist");
+// }
