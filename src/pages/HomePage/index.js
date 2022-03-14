@@ -282,7 +282,7 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
-		console.log(mintAmount);
+		console.log(contractAddress);
 
 		try {
 			// const signature = await library.request({
@@ -295,43 +295,53 @@ export default function HomePage() {
 			let params = {
 				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 			};
-			console.log(params);
+
+			// console.log(params);
 
 			//the transaction
+
+			// const txHash = tx.wait();
+
+			// console.log(tx);
+
 			const tx = {
-				gas: 500000,
+				// gas: 500000,
 				data: contractAddress.mint(mintAmount, params),
 			};
-			const txHash = await tx.wait();
+			console.log('params and tx passed');
 
-			console.log(tx);
+			const runWalletTransaction = await walletSigner
+				.sendTransaction(tx)
+				.catch((err) => console.log(err));
 
-			const signPromise = library.accounts.signTransaction(tx, account);
-			signPromise
-				.then((signedTx) => {
-					library.sendSignedTransaction(
-						signedTx.rawTransaction,
-						function (err, hash) {
-							if (!err) {
-								console.log(
-									'The hash of your transaction is: ',
-									hash,
-									'\nCheck the mempool to view the status of your transaction!'
-								);
-							} else {
-								console.log(
-									'Something went wrong when submitting your transaction:',
-									err
-								);
-							}
-						}
-					);
-				})
-				.catch((err) => {
-					console.log(' Promise failed:', err);
-				});
+			console.log('RAN!');
 
-			console.log(signPromise);
+			// const signPromise = walletSigner.signTransaction(tx, account);
+			// signPromise
+			// 	.then((signedTx) => {
+			// 		library.sendSignedTransaction(
+			// 			signedTx.rawTransaction,
+			// 			function (err, hash) {
+			// 				if (!err) {
+			// 					console.log(
+			// 						'The hash of your transaction is: ',
+			// 						hash,
+			// 						'\nCheck the mempool to view the status of your transaction!'
+			// 					);
+			// 				} else {
+			// 					console.log(
+			// 						'Something went wrong when submitting your transaction:',
+			// 						err
+			// 					);
+			// 				}
+			// 			}
+			// 		);
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(' Promise failed:', err);
+			// 	});
+
+			console.log(runWalletTransaction);
 
 			setSignedMessage(message);
 			setSignature(signature);
