@@ -285,12 +285,12 @@ export default function HomePage() {
 		console.log(mintAmount);
 
 		try {
-			const signature = await library.request({
-				method: 'personal_sign',
-				params: [toHex(message), account],
-			});
-			const transaction = await contractAddress.mint();
-			console.log(transaction);
+			// const signature = await library.request({
+			// 	method: 'personal_sign',
+			// 	params: [toHex(message), account],
+			// });
+			// const transaction = await contractAddress.mint();
+			// console.log(transaction);
 
 			const nonce = await library.getTransactionCount(account, 'latest'); //get latest nonce
 
