@@ -88,11 +88,16 @@ export default function HomePage() {
 	}, []);
 
 	async function ProcessMint() {
-		const tx = await contractAddress.populateTransaction
-			.mint(mintAmount, {
-				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-			})
-			.catch((err) => console.log(err));
+		return new Promise((resolve, reject) => {
+			contractAddress
+				.mint(mintAmount, {
+					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+				})
+				.on('debug', console.log)
+				.on('error', (error) => {
+					reject(error);
+				});
+		});
 	}
 
 	const mint = async () => {
