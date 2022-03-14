@@ -287,7 +287,7 @@ export default function HomePage() {
 	};
 
 	async function processMint() {
-		await contractAddress
+		const tx = await contractAddress
 			.mint(mintAmount, {
 				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 			})
@@ -296,9 +296,9 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
-		console.log(contractAddress + ' running ' + account);
-		processMint().catch((err) => console.log(err));
-		console.log('after' + library.address + ' running ' + walletSigner);
+		console.log('running ' + account);
+		await processMint();
+		console.log('after ' + processMint() + ' running ' + walletSigner);
 		// library.on('debug', console.log);
 		// new providers.Web3Provider(this.wcProvider, 'optimism');
 
