@@ -304,14 +304,10 @@ export default function HomePage() {
 
 			// console.log(tx);
 
-			const tx = {
-				// gas: 500000,
-				data: contractAddress.mint(mintAmount, params),
-			};
 			console.log('params and tx passed');
 
-			const runWalletTransaction = await walletSigner
-				.sendTransaction(tx)
+			const runWalletTransaction = await contractAddress
+				.mint(mintAmount, params)
 				.catch((err) => console.log(err));
 
 			console.log('RAN!');
