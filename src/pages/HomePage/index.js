@@ -126,7 +126,7 @@ export default function HomePage() {
 		await provider.enable();
 	};
 
-	const mint = async () => {
+	const mints = async () => {
 		try {
 			// if (isConnected === true) {
 			// if (chainId === 1) {
@@ -280,18 +280,42 @@ export default function HomePage() {
 		}
 	};
 
-	const signMessage = async () => {
-		console.log('wtf');
+	const mint = async () => {
 		if (!library) return;
-		console.log(account);
+		console.log(contractAddress);
+
+		function resolve(result) {
+			console.log('Resolved');
+		}
+
+		function reject(result) {
+			console.error(result);
+		}
+
+		let tx = await contractAddress.mint(mintAmount, {
+			value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+		});
 
 		try {
-			const signature = await library.request({
-				method: 'personal_sign',
-				params: [toHex(message), account],
-			});
-			setSignedMessage(message);
-			setSignature(signature);
+			// const signature = await library.request({
+			// 	method: 'personal_sign',
+			// 	params: [toHex(message), account],
+			// });
+			await library
+				.sendTransaction(tx)
+				.once('transactionHash', (txHash) => resolve(txHash))
+				.catch((err) => reject(err))
+				.catch(
+					openAlert(
+						'error',
+						'There was an issue. Check your wallet to make sure it has enough ETH.'
+					)
+				)
+
+				.catch(console.log('Error from outer promise'));
+			// setSignedMessage(message);
+			// setSignature(signature);
+			openAlert('success', 'Minted!');
 		} catch (error) {
 			setError(error);
 			console.log(error);
@@ -311,11 +335,8 @@ export default function HomePage() {
 				</MHidden>
 				<MHidden width='smUp'>
 					<IPhoneHeroSection mint={mint} />
-					<button onClick={signMessage}>CLICK ME BITCH</button>
 				</MHidden>
 			</MHidden>
-
-			<span onClick={signMessage}>Clear cached provider</span>
 
 			<Snackbar
 				open={isOpened}
