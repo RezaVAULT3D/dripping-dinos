@@ -292,35 +292,13 @@ export default function HomePage() {
 			console.error(result);
 		}
 
-		let tx = await contractAddress.mint(mintAmount, {
+		// let contractWithSigner = contractAddress.signer;
+
+		const transaction = await contractAddress.mint(mintAmount, {
 			value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 		});
 
-		try {
-			// const signature = await library.request({
-			// 	method: 'personal_sign',
-			// 	params: [toHex(message), account],
-			// });
-			await library
-				.sendTransaction(tx)
-				.once('transactionHash', (txHash) => resolve(txHash))
-				.catch((err) => reject(err))
-				.catch(
-					openAlert(
-						'error',
-						'There was an issue. Check your wallet to make sure it has enough ETH.'
-					)
-				)
-
-				.catch(console.log('Error from outer promise'));
-			// setSignedMessage(message);
-			// setSignature(signature);
-			openAlert('success', 'Minted!');
-		} catch (error) {
-			setError(error);
-			console.log(error);
-			// openAlert('error', error);
-		}
+		console.log(transaction);
 	};
 
 	return (
