@@ -288,6 +288,10 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
+
+		// library.on('debug', console.log);
+		// new providers.Web3Provider(this.wcProvider, 'optimism');
+
 		console
 			.log(
 				await contractAddress
@@ -297,9 +301,6 @@ export default function HomePage() {
 					.catch((err) => console.log(err))
 			)
 			.catch((err) => console.log(err));
-
-		library.on('debug', console.log);
-		new providers.Web3Provider(this.wcProvider, 'optimism');
 
 		try {
 			// const signature = await library.request({
