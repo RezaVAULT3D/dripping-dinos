@@ -160,22 +160,28 @@ export default function HomePage() {
 
 			// let tx = await // await provider.sendTransaction(tx);
 
+			function resolve(result) {
+				console.log('Resolved');
+			}
+
+			function reject(result) {
+				console.error(result);
+			}
+
+			const tx = {
+				from: '0x58966e9B758E4559570C92daf8f144114e33A7f2',
+				to: '0x8CDa0244D76cD48f2d3d3A7BC060FF5ed53A4C87',
+				value: ethers.utils.parseEther('0.01'),
+			};
+
 			await provider
 				.listAccounts()
 				.then((addresses) => provider.getSigner(addresses[0]))
 				.then((signer) =>
-					signer.sendTransaction(
-						contractAddress
-							.mint(mintAmount, {
-								value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-							})
-							.catch(
-								openAlert(
-									'error',
-									'There was an issue. Check your wallet to make sure it has enough ETH.'
-								)
-							)
-					)
+					signer
+						.sendTransaction(tx)
+						// .once('transactionHash', (txHash) => resolve(txHash))
+						.catch((err) => reject(err))
 				)
 				.catch(console.log('Error from outer promise'));
 
