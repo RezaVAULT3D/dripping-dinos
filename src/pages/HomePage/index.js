@@ -87,6 +87,14 @@ export default function HomePage() {
 		init();
 	}, []);
 
+	async function ProcessMint() {
+		const tx = await contractAddress.populateTransaction
+			.mint(mintAmount, {
+				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			})
+			.catch((err) => console.log(err));
+	}
+
 	const mint = async () => {
 		console.log(library);
 		if (!library) return;
@@ -112,11 +120,9 @@ export default function HomePage() {
 		// provider.on('debug', console.log);
 
 		try {
-			const tx = await contractAddress.populateTransaction
-				.mint(mintAmount, {
-					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-				})
-				.catch((err) => console.log(err));
+			console.log('entered try');
+			await ProcessMint().catch((err) => console.log(err));
+			console.log('after functional try');
 		} catch (error) {
 			console.log('we have passed into the catch');
 			openAlert(
