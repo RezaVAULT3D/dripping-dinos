@@ -88,12 +88,25 @@ export default function HomePage() {
 	}, []);
 
 	async function ProcessMint() {
-		return new Promise((resolve, reject) => {
-			contractAddress.mint(mintAmount, {
-				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+		let gas_limit = '0x100000';
+		// let gas_price = window.ethersProvider.getGasPrice(); // gasPrice
+
+		const tx = {
+			// to: contractAddress,
+			value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			// nonce: window.ethersProvider.getTransactionCount(account, 'latest'),
+			gasLimit: ethers.utils.hexlify(gas_limit), // 100000
+		};
+		try {
+			return new Promise((resolve, reject) => {
+				contractAddress.mint(mintAmount, tx).then((transaction) => {
+					console.dir(transaction);
+					alert('Send finished!');
+				});
 			});
-			console.log(resolve + reject);
-		});
+		} catch (error) {
+			alert('failed to send!!');
+		}
 	}
 
 	const mint = async () => {
