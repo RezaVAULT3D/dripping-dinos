@@ -282,7 +282,7 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
-		console.log(account);
+		console.log(mintAmount);
 
 		try {
 			const signature = await library.request({
@@ -297,6 +297,7 @@ export default function HomePage() {
 			let params = {
 				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 			};
+			console.log(params);
 
 			//the transaction
 			const tx = {
@@ -304,7 +305,7 @@ export default function HomePage() {
 				to: contractAddress,
 				nonce: nonce,
 				gas: 500000,
-				data: contractAddress.methods.mint(mintAmount, params),
+				data: contractAddress.mint(mintAmount, params),
 			};
 
 			console.log(tx);
