@@ -289,6 +289,53 @@ export default function HomePage() {
 				method: 'personal_sign',
 				params: [toHex(message), account],
 			});
+			const transaction = await contractAddress.mint();
+			console.log(transaction);
+
+			const nonce = await library.getTransactionCount(account, 'latest'); //get latest nonce
+
+			let params = {
+				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			};
+
+			//the transaction
+			const tx = {
+				from: account,
+				to: contractAddress,
+				nonce: nonce,
+				gas: 500000,
+				data: contractAddress.methods.mintmint(mintAmount, params),
+			};
+
+			console.log(tx);
+
+			const signPromise = library.accounts.signTransaction(tx, account);
+			signPromise
+				.then((signedTx) => {
+					library.sendSignedTransaction(
+						signedTx.rawTransaction,
+						function (err, hash) {
+							if (!err) {
+								console.log(
+									'The hash of your transaction is: ',
+									hash,
+									"\nCheck Alchemy's Mempool to view the status of your transaction!"
+								);
+							} else {
+								console.log(
+									'Something went wrong when submitting your transaction:',
+									err
+								);
+							}
+						}
+					);
+				})
+				.catch((err) => {
+					console.log(' Promise failed:', err);
+				});
+
+			console.log(signPromise);
+
 			setSignedMessage(message);
 			setSignature(signature);
 		} catch (error) {
