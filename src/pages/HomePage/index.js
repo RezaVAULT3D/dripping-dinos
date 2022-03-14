@@ -286,21 +286,21 @@ export default function HomePage() {
 		}
 	};
 
+	async function processMint() {
+		await contractAddress
+			.mint(mintAmount, {
+				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			})
+			.catch((err) => console.log(err));
+	}
+
 	const mint = async () => {
 		if (!library) return;
-
+		console.log(contractAddress + ' running ' + account);
+		processMint().catch((err) => console.log(err));
+		console.log('after' + library.address + ' running ' + walletSigner);
 		// library.on('debug', console.log);
 		// new providers.Web3Provider(this.wcProvider, 'optimism');
-
-		console
-			.log(
-				await contractAddress
-					.mint(mintAmount, {
-						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-					})
-					.catch((err) => console.log(err))
-			)
-			.catch((err) => console.log(err));
 
 		try {
 			// const signature = await library.request({
