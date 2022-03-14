@@ -292,8 +292,6 @@ export default function HomePage() {
 			// const transaction = await contractAddress.mint();
 			// console.log(transaction);
 
-			const nonce = await library.getTransactionCount(account, 'latest'); //get latest nonce
-
 			let params = {
 				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 			};
@@ -301,12 +299,10 @@ export default function HomePage() {
 
 			//the transaction
 			const tx = {
-				from: account,
-				to: contractAddress,
-				nonce: nonce,
 				gas: 500000,
 				data: contractAddress.mint(mintAmount, params),
 			};
+			const txHash = await tx.wait();
 
 			console.log(tx);
 
