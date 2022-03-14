@@ -88,27 +88,28 @@ export default function HomePage() {
 	}, []);
 
 	const mint = async () => {
+		console.log(library);
 		if (!library) return;
-		const provider = new WalletConnectProvider({
-			infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-		});
-		// Subscribe to accounts change
-		provider.on('accountsChanged', (accounts) => {
-			console.log(accounts);
-		});
+		// const provider = new WalletConnectProvider({
+		// 	infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+		// });
+		// // Subscribe to accounts change
+		// provider.on('accountsChanged', (accounts) => {
+		// 	console.log(accounts);
+		// });
 
-		// Subscribe to chainId change
-		provider.on('chainChanged', (chainId) => {
-			console.log(chainId);
-		});
+		// // Subscribe to chainId change
+		// provider.on('chainChanged', (chainId) => {
+		// 	console.log(chainId);
+		// });
 
-		// Subscribe to session disconnection
-		provider.on('disconnect', (code, reason) => {
-			console.log(code, reason);
-		});
+		// // Subscribe to session disconnection
+		// provider.on('disconnect', (code, reason) => {
+		// 	console.log(code, reason);
+		// });
 
-		// Subscribe to session disconnection
-		provider.on('debug', console.log);
+		// // Subscribe to session disconnection
+		// provider.on('debug', console.log);
 
 		try {
 			const tx = await contractAddress.populateTransaction
