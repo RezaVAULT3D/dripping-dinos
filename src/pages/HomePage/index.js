@@ -3,6 +3,7 @@ import { Box, Snackbar, Alert } from '@mui/material';
 import { ethers, Contract, providers } from 'ethers';
 import MHidden from '../../components/@mui-extend/MHidden';
 import DesktopHeroSection from './heroSections/DesktopHeroSection';
+import { toHex, truncateAddress } from '../../components/utils';
 import IPadHeroSection from './heroSections/IPadHeroSection';
 import IPhoneHeroSection from './heroSections/IPhoneHeroSection';
 // import useWallet from '../../hooks/useWallet';
@@ -20,8 +21,13 @@ export default function HomePage() {
 	const [message, setMessage] = useState('');
 	const [contractAddress, setContractAddress] = useState(undefined);
 	const [isConnected, setIsConnected] = useState(false);
+	const [account, setAccount] = useState();
+	const [library, setLibrary] = useState();
+	const [signedMessage, setSignedMessage] = useState('');
+	const [signature, setSignature] = useState('');
 	const [walletSigner, setWalletSigner] = useState(undefined);
 	const [chainId, setChainId] = useState(undefined);
+	const [error, setError] = useState('');
 
 	const openAlert = (severity, message) => {
 		setSeverity(severity);
@@ -63,11 +69,7 @@ export default function HomePage() {
 				infuraId: '716d0574cc4c423a9adc0f4e451076ee',
 			});
 			const web3Provider = new providers.Web3Provider(provider);
-
 			const signer = web3Provider.getSigner();
-
-			setWalletSigner(signer);
-
 			await provider.enable();
 
 			// Subscribe to accounts change
@@ -89,8 +91,13 @@ export default function HomePage() {
 			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
 			// setWalletSigner(connection);
 			setChainId(chainId);
+			setWalletSigner(signer);
+			setLibrary(provider);
 			setContractAddress(contract);
 			setIsConnected(true);
+			const accounts = await provider.accounts;
+			if (accounts) setAccount(accounts[0]);
+			// console.log(account);
 		};
 		init();
 	}, []);
@@ -156,7 +163,7 @@ export default function HomePage() {
 
 			// console.log(provider);
 
-			console.log(await provider.listAccounts());
+			// console.log(await provider.listAccounts());
 
 			// let tx = await // await provider.sendTransaction(tx);
 
@@ -168,22 +175,52 @@ export default function HomePage() {
 				console.error(result);
 			}
 
-			const tx = {
-				from: '0x58966e9B758E4559570C92daf8f144114e33A7f2',
+			var rawTx = {
+				nonce: ethers.utils.parseUnits('1').toHexString(),
+				gasPrice: ethers.utils.parseUnits('20000000000').toHexString(),
+				gasLimit: ethers.utils.parseUnits('30000000000').toHexString(),
 				to: '0x8CDa0244D76cD48f2d3d3A7BC060FF5ed53A4C87',
-				value: ethers.utils.parseEther('0.01'),
+				value: ethers.utils.parseUnits('0.01', 'ether').toHexString(),
+				data: '0xc0de',
 			};
 
-			await provider
-				.listAccounts()
-				.then((addresses) => provider.getSigner(addresses[0]))
-				.then((signer) =>
-					signer
-						.sendTransaction(tx)
-						// .once('transactionHash', (txHash) => resolve(txHash))
-						.catch((err) => reject(err))
-				)
-				.catch(console.log('Error from outer promise'));
+			// console.log(ethers.utils.parseUnits('1', 'ether').toHexString());
+			const txHash = await provider.sendTransaction(rawTx);
+			// console.log('transactionHash is ' + txHash);
+
+			// await provider.sendTransaction(tx).catch((err) => reject(err));
+
+			// await provider
+			// 	.listAccounts()
+			// 	.then((addresses) => provider.getSigner(addresses[0]))
+			// 	.then((signer) =>
+			// 		signer
+			// 			.sendTransaction(tx)
+			// 			// .once('transactionHash', (txHash) => resolve(txHash))
+			// 			.catch((err) => reject(err))
+			// 	)
+			// 	.catch(console.log('Error from outer promise'));
+
+			// await provider
+			// 	.listAccounts()
+			// 	.then((addresses) => provider.getSigner(addresses[0]))
+			// 	.then((signer) =>
+			// 		signer.sendTransaction(
+			// 			contractAddress
+			// 				.mint(mintAmount, {
+			// 					value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
+			// 				})
+			// 				.once('transactionHash', (txHash) => resolve(txHash))
+			// 				.catch((err) => reject(err))
+			// 				.catch(
+			// 					openAlert(
+			// 						'error',
+			// 						'There was an issue. Check your wallet to make sure it has enough ETH.'
+			// 					)
+			// 				)
+			// 		)
+			// 	)
+			// 	.catch(console.log('Error from outer promise'));
 
 			// await walletSigner.signTransaction(tx);
 
@@ -243,6 +280,25 @@ export default function HomePage() {
 		}
 	};
 
+	const signMessage = async () => {
+		console.log('wtf');
+		if (!library) return;
+		console.log(account);
+
+		try {
+			const signature = await library.request({
+				method: 'personal_sign',
+				params: [toHex(message), account],
+			});
+			setSignedMessage(message);
+			setSignature(signature);
+		} catch (error) {
+			setError(error);
+			console.log(error);
+			// openAlert('error', error);
+		}
+	};
+
 	return (
 		<Box height='100vh'>
 			<MHidden width='mdDown'>
@@ -255,10 +311,11 @@ export default function HomePage() {
 				</MHidden>
 				<MHidden width='smUp'>
 					<IPhoneHeroSection mint={mint} />
+					<button onClick={signMessage}>CLICK ME BITCH</button>
 				</MHidden>
 			</MHidden>
 
-			<span onClick={clearCache}>Clear cached provider</span>
+			<span onClick={signMessage}>Clear cached provider</span>
 
 			<Snackbar
 				open={isOpened}
