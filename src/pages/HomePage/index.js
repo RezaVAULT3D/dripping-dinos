@@ -304,7 +304,7 @@ export default function HomePage() {
 				to: contractAddress,
 				nonce: nonce,
 				gas: 500000,
-				data: contractAddress.methods.mintmint(mintAmount, params),
+				data: contractAddress.methods.mint(mintAmount, params),
 			};
 
 			console.log(tx);
@@ -319,7 +319,7 @@ export default function HomePage() {
 								console.log(
 									'The hash of your transaction is: ',
 									hash,
-									"\nCheck Alchemy's Mempool to view the status of your transaction!"
+									'\nCheck the mempool to view the status of your transaction!'
 								);
 							} else {
 								console.log(
