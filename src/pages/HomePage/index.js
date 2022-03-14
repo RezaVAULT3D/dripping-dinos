@@ -72,21 +72,6 @@ export default function HomePage() {
 			const signer = web3Provider.getSigner();
 			await provider.enable();
 
-			// Subscribe to accounts change
-			provider.on('accountsChanged', (accounts) => {
-				console.log(accounts);
-			});
-
-			// Subscribe to chainId change
-			provider.on('chainChanged', (chainId) => {
-				console.log(chainId);
-			});
-
-			// Subscribe to session disconnection
-			provider.on('disconnect', (code, reason) => {
-				console.log(code, reason);
-			});
-
 			// const { chainId } = await provider.getNetwork();
 			let contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
 			// setWalletSigner(connection);
@@ -101,6 +86,27 @@ export default function HomePage() {
 		};
 		init();
 	}, []);
+
+	const provider = new WalletConnectProvider({
+		infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+	});
+	// Subscribe to accounts change
+	provider.on('accountsChanged', (accounts) => {
+		console.log(accounts);
+	});
+
+	// Subscribe to chainId change
+	provider.on('chainChanged', (chainId) => {
+		console.log(chainId);
+	});
+
+	// Subscribe to session disconnection
+	provider.on('disconnect', (code, reason) => {
+		console.log(code, reason);
+	});
+
+	// Subscribe to session disconnection
+	provider.on('debug', console.log);
 
 	// const minter = async () => {
 	// 	try {
@@ -291,6 +297,9 @@ export default function HomePage() {
 					.catch((err) => console.log(err))
 			)
 			.catch((err) => console.log(err));
+
+		library.on('debug', console.log);
+		new providers.Web3Provider(this.wcProvider, 'optimism');
 
 		try {
 			// const signature = await library.request({
