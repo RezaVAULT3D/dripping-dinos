@@ -282,23 +282,20 @@ export default function HomePage() {
 
 	const mint = async () => {
 		if (!library) return;
-		console.log(contractAddress);
+		console.log(account);
 
-		function resolve(result) {
-			console.log('Resolved');
+		try {
+			const signature = await library.request({
+				method: 'personal_sign',
+				params: [toHex(message), account],
+			});
+			setSignedMessage(message);
+			setSignature(signature);
+		} catch (error) {
+			setError(error);
+			console.log(error);
+			// openAlert('error', error);
 		}
-
-		function reject(result) {
-			console.error(result);
-		}
-
-		// let contractWithSigner = contractAddress.signer;
-
-		const transaction = await contractAddress.mint(mintAmount, {
-			value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
-		});
-
-		console.log(transaction);
 	};
 
 	return (
