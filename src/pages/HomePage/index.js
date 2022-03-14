@@ -287,7 +287,7 @@ export default function HomePage() {
 	};
 
 	async function processMint() {
-		const tx = await contractAddress
+		const tx = await contractAddress.populateTransaction
 			.mint(mintAmount, {
 				value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 			})
