@@ -50,6 +50,7 @@ export default function HomePage() {
 	}, []);
 
 	async function MintToken() {
+		//making change
 		try {
 			if (isConnected) {
 				const web3Modal = await getWeb3Modal();
