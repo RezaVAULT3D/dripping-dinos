@@ -54,10 +54,10 @@ export default function HomePage() {
 				const web3Modal = await getWeb3Modal();
 				const connection = await web3Modal.connect();
 				const provider = new ethers.providers.Web3Provider(connection);
-				const signer = provider.getSigner();
+				const signer = await provider.getSigner();
 				const { chainId } = await provider.getNetwork();
 				console.log('chain id: ' + chainId);
-				if (chainId === 1) {
+				if (chainId === 1 || chainId === 56) {
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					console.log(contract.estimateGas);
 					alert('chain id:' + chainId + 'contract passed');
