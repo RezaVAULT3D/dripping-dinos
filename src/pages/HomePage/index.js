@@ -32,14 +32,17 @@ export default function HomePage() {
 				walletconnect: {
 					package: WalletConnectProvider,
 					options: {
-						// infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-						infuraId: 'f2bc2579d2f6f9acebd3e292c70c0d3b',
+						// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
+						// infuraId: '716d0574cc4c423a9adc0f4e451076ee', // Yuri
+						// infuraId: 'e9b534f52ce94481b7fa65aa461839c3', // Silver
+						infuraId: 'f2bc2579d2f6f9acebd3e292c70c0d3b', // Michael
 					},
 				},
 			},
 		});
 		return web3Modal;
 	};
+	// console.log('web3modal deets' + getWeb3Modal);
 
 	useEffect(() => {
 		const init = async () => {
@@ -49,17 +52,22 @@ export default function HomePage() {
 		init();
 	}, []);
 
-	async function MintToken() {
-		//making change
+	const mint = async () => {
 		try {
 			if (isConnected) {
 				const web3Modal = await getWeb3Modal();
+				// alert('const: web3modal passed');
 				const connection = await web3Modal.connect();
+				// alert('const: connection passed');
 				const provider = new ethers.providers.Web3Provider(connection);
-				const signer = await provider.getSigner();
+				// alert('const: provider passed');
+				const signer = provider.getSigner();
+				// alert('const: signer passed');
 				const { chainId } = await provider.getNetwork();
 				console.log('chain id: ' + chainId);
+				// const chainId = await ethereum.request({ method: 'eth_chainId' });
 				if (chainId === 1 || chainId === 4) {
+					// const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					console.log(contract.estimateGas);
 					alert('chain id:' + chainId + 'contract passed');
@@ -68,6 +76,8 @@ export default function HomePage() {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
 					alert('const: transaction passed');
+					// await transaction.wait();
+					alert('const: await passed');
 					openAlert('success', 'Minted!');
 				} else {
 					openAlert('warning', 'Please choose Ethereum mainnet.');
@@ -81,20 +91,24 @@ export default function HomePage() {
 				error.message ? error.message : 'Transaction is failed.'
 			);
 		}
-	}
+	};
 
 	return (
 		<Box height='100vh'>
 			<MHidden width='mdDown'>
-				<DesktopHeroSection mint={() => MintToken()} />
+				<DesktopHeroSection
+					mint={async () => {
+						mint();
+					}}
+				/>
 			</MHidden>
 
 			<MHidden width='mdUp'>
 				<MHidden width='smDown'>
-					<IPadHeroSection mint={() => MintToken()} />
+					<IPadHeroSection mint={mint} />
 				</MHidden>
 				<MHidden width='smUp'>
-					<IPhoneHeroSection mint={() => MintToken()} />
+					<IPhoneHeroSection mint={mint} />
 				</MHidden>
 			</MHidden>
 
