@@ -48,7 +48,7 @@ export default function HomePage() {
 		init();
 	}, []);
 
-	const mint = async () => {
+	async function MintToken() {
 		try {
 			if (isConnected) {
 				const web3Modal = await getWeb3Modal();
@@ -57,7 +57,7 @@ export default function HomePage() {
 				const signer = await provider.getSigner();
 				const { chainId } = await provider.getNetwork();
 				console.log('chain id: ' + chainId);
-				if (chainId === 1 || chainId === 56) {
+				if (chainId === 1) {
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					console.log(contract.estimateGas);
 					alert('chain id:' + chainId + 'contract passed');
@@ -79,32 +79,20 @@ export default function HomePage() {
 				error.message ? error.message : 'Transaction is failed.'
 			);
 		}
-	};
+	}
 
 	return (
 		<Box height='100vh'>
 			<MHidden width='mdDown'>
-				<DesktopHeroSection
-					mint={async () => {
-						mint();
-					}}
-				/>
+				<DesktopHeroSection mint={() => MintToken()} />
 			</MHidden>
 
 			<MHidden width='mdUp'>
 				<MHidden width='smDown'>
-					<IPadHeroSection
-						mint={async () => {
-							mint();
-						}}
-					/>
+					<IPadHeroSection mint={() => MintToken()} />
 				</MHidden>
 				<MHidden width='smUp'>
-					<IPhoneHeroSection
-						mint={async () => {
-							mint();
-						}}
-					/>
+					<IPhoneHeroSection mint={() => MintToken()} />
 				</MHidden>
 			</MHidden>
 
