@@ -32,7 +32,8 @@ export default function HomePage() {
 				walletconnect: {
 					package: WalletConnectProvider,
 					options: {
-						infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+						// infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+						infuraId: 'f2bc2579d2f6f9acebd3e292c70c0d3b',
 					},
 				},
 			},
@@ -57,7 +58,7 @@ export default function HomePage() {
 				const signer = await provider.getSigner();
 				const { chainId } = await provider.getNetwork();
 				console.log('chain id: ' + chainId);
-				if (chainId === 1) {
+				if (chainId === 1 || chainId === 4) {
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					console.log(contract.estimateGas);
 					alert('chain id:' + chainId + 'contract passed');
