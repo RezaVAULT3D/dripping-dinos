@@ -74,7 +74,7 @@ export default function DesktopHeroSection({ mint }) {
 						fontSize={{ xl: 120, lg: 100, md: 70, sm: 50, xs: 20 }}
 						fontWeight={900}
 					>
-						Dinos
+						Dino's
 					</Typography>
 				</Typography>
 				<Stack direction='row' alignItems='center' spacing={5} ml={2}>

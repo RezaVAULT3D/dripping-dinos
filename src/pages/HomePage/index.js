@@ -33,9 +33,8 @@ export default function HomePage() {
 					package: WalletConnectProvider,
 					options: {
 						// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
-						// infuraId: '716d0574cc4c423a9adc0f4e451076ee', // Yuri
-						// infuraId: 'e9b534f52ce94481b7fa65aa461839c3', // Silver
-						infuraId: 'f2bc2579d2f6f9acebd3e292c70c0d3b', // Michael
+						// infuraId: '716d0574cc4c423a9adc0f4e451076ee',
+						infuraId: 'e9b534f52ce94481b7fa65aa461839c3'
 					},
 				},
 			},
@@ -66,12 +65,12 @@ export default function HomePage() {
 				const { chainId } = await provider.getNetwork();
 				console.log('chain id: ' + chainId);
 				// const chainId = await ethereum.request({ method: 'eth_chainId' });
-				if (chainId === 1 || chainId === 4) {
+				if (chainId === 4 | chainId === 1) {
 					// const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-					console.log(contract.estimateGas);
+					console.log(contract.estimateGas)
 					alert('chain id:' + chainId + 'contract passed');
-					console.log(NFT_PRICE * mintAmount);
+					console.log(NFT_PRICE * mintAmount)
 					let transaction = await contract.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
@@ -96,11 +95,7 @@ export default function HomePage() {
 	return (
 		<Box height='100vh'>
 			<MHidden width='mdDown'>
-				<DesktopHeroSection
-					mint={async () => {
-						mint();
-					}}
-				/>
+				<DesktopHeroSection mint={async() => {mint()}} />
 			</MHidden>
 
 			<MHidden width='mdUp'>
@@ -130,3 +125,4 @@ export default function HomePage() {
 		</Box>
 	);
 }
+
