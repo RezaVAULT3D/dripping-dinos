@@ -22,6 +22,9 @@ export default function HomePage() {
 		setSeverity(severity);
 		setMessage(message);
 		setIsOpened(true);
+		console.log(
+			"You made it! Hit that mint button...you know you want a Drippin' Dino..."
+		);
 	};
 
 	const getWeb3Modal = async () => {
@@ -34,14 +37,13 @@ export default function HomePage() {
 					options: {
 						// infuraId: '8cf3cad623da43f9a84ab5ac94230cf6'
 						// infuraId: '716d0574cc4c423a9adc0f4e451076ee',
-						infuraId: 'e9b534f52ce94481b7fa65aa461839c3'
+						infuraId: 'e9b534f52ce94481b7fa65aa461839c3',
 					},
 				},
 			},
 		});
 		return web3Modal;
 	};
-	// console.log('web3modal deets' + getWeb3Modal);
 
 	useEffect(() => {
 		const init = async () => {
@@ -55,39 +57,31 @@ export default function HomePage() {
 		try {
 			if (isConnected) {
 				const web3Modal = await getWeb3Modal();
-				// alert('const: web3modal passed');
 				const connection = await web3Modal.connect();
-				// alert('const: connection passed');
 				const provider = new ethers.providers.Web3Provider(connection);
-				// alert('const: provider passed');
 				const signer = provider.getSigner();
-				// alert('const: signer passed');
 				const { chainId } = await provider.getNetwork();
-				console.log('chain id: ' + chainId);
-				// const chainId = await ethereum.request({ method: 'eth_chainId' });
-				if (chainId === 4 | chainId === 1) {
-					// const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+				if (chainId === 1) {
 					const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-					console.log(contract.estimateGas)
-					alert('chain id:' + chainId + 'contract passed');
-					console.log(NFT_PRICE * mintAmount)
 					let transaction = await contract.mint(mintAmount, {
 						value: ethers.utils.parseEther(String(NFT_PRICE * mintAmount)),
 					});
-					alert('const: transaction passed');
-					// await transaction.wait();
-					alert('const: await passed');
-					openAlert('success', 'Minted!');
+					openAlert('success', 'Minted! Check your wallet.');
 				} else {
 					openAlert('warning', 'Please choose Ethereum mainnet.');
 				}
 			} else {
-				openAlert('error', "Ethereum object doesn't exist");
+				openAlert(
+					'error',
+					'Not connected! Please try to refresh the page and connect again.'
+				);
 			}
 		} catch (error) {
 			openAlert(
 				'error',
-				error.message ? error.message : 'Transaction is failed.'
+				error.message
+					? error.message
+					: 'Transaction failed. Do you have enough gas and/or ETH?'
 			);
 		}
 	};
@@ -95,7 +89,11 @@ export default function HomePage() {
 	return (
 		<Box height='100vh'>
 			<MHidden width='mdDown'>
-				<DesktopHeroSection mint={async() => {mint()}} />
+				<DesktopHeroSection
+					mint={async () => {
+						mint();
+					}}
+				/>
 			</MHidden>
 
 			<MHidden width='mdUp'>
@@ -125,4 +123,3 @@ export default function HomePage() {
 		</Box>
 	);
 }
-
