@@ -13,13 +13,13 @@ import { DISCORD_URL, INSTAGRAM_URL, TWITTER_URL, APP_BAR_MOBILE, APP_BAR_DESKTO
 // ----------------------------------------------------------------------
 
 const navConfig = [
-  { title: 'Home', path: '/', ready: true },
-  { title: 'About us', path: '/about-us', ready: true },
-  { title: 'Collection', path: '/collection', ready: false },
-  { title: 'Roadmap', path: '/roadmap', ready: true },
-  { title: 'DAO', path: '/dao', ready: false },
-  { title: 'Charity', path: '/charity', ready: true },
-  { title: 'Shop', path: '/shop', ready: false },
+  // { title: 'Home', path: '/', ready: true },
+  // { title: 'About us', path: '/about-us', ready: true },
+  // { title: 'Collection', path: '/collection', ready: false },
+  // { title: 'Roadmap', path: '/roadmap', ready: true },
+  // { title: 'DAO', path: '/dao', ready: false },
+  // { title: 'Charity', path: '/charity', ready: true },
+  // { title: 'Shop', path: '/shop', ready: false },
 ];
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
@@ -101,7 +101,7 @@ export default function TopNavbar() {
               direction="row"
               justifyContent="center"
               alignItems="center"
-              // sx={{ borderLeft: '1px solid #F2F2F2' }} 
+              // sx={{ borderLeft: '1px solid #F2F2F2' }}
               pl={3}
             >
               <IconButton sx={{ color: '#F2F2F2' }} component={Link} href={INSTAGRAM_URL}>
